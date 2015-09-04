@@ -17,8 +17,8 @@ output$datatable <- DT::renderDataTable({
 
     ## data location ----
 url <- "https://raw.githubusercontent.com/OpenExoplanetCatalogue/oec_tables/master/comma_separated/open_exoplanet_catalogue.txt"
-library(RCurl)
-## x <- getURL(url)
+## library(RCurl)
+## url <- getURL(url)
 ## get data
 data <- read.csv(url, skip = 30, stringsAsFactors = F)
 ## column names
@@ -33,8 +33,8 @@ DT::datatable(data[, c("Primary ID", "Binary Flag", "Planetary Mass", "Discovery
 output$plot <- threejs::renderScatterplotThree({
 
 url <- "https://raw.githubusercontent.com/OpenExoplanetCatalogue/oec_tables/master/comma_separated/open_exoplanet_catalogue.txt"
-library(RCurl)
-## x <- getURL(url)
+## library(RCurl)
+## url <- getURL(url)
 ## get data
 data <- read.csv(url, skip = 30, stringsAsFactors = F)
 ## column names
