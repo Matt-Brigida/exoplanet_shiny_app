@@ -17,10 +17,19 @@ output$datatable <- DT::renderDataTable({
 
     ## data location ----
 url <- "https://raw.githubusercontent.com/OpenExoplanetCatalogue/oec_tables/master/comma_separated/open_exoplanet_catalogue.txt"
-## library(RCurl)
-## url <- getURL(url)
-## get data
-data <- read.csv(url, skip = 30, stringsAsFactors = F)
+
+### get data
+### old: worked locally but not on shinyapps   
+# data <- read.csv(url, skip = 30, stringsAsFactors = F)
+
+## modified code from http://stackoverflow.com/questions/32416864/dealing-with-raw-vector-from-r-geturlcontent
+## works on shinyapps
+library(RCurl)
+url <- getURLContent(url, httpauth = 1L, binary=TRUE)
+
+data <- readBin(url , what='character') 
+data <- data.frame(read.csv(textConnection(data), stringsAsFactors = FALSE, skip = 30))
+
 ## column names
 names(data) <- c("Primary ID", "Binary Flag", "Planetary Mass", "Radius", "Period", "Axis", "Eccentricity", "Periastron", "Longitude" ,"Ascending Node", "Inclination", "Temp", "Age", "Discovery Method" ,"Discovery Year", "Last Updated", "Right Ascension", "Declination", "Distance from Sun (parsec)", "Host Start Mass", "Host Star Radius", "HS Metallicity", "HS temp" ,"HS age")
 
@@ -33,10 +42,18 @@ DT::datatable(data[, c("Primary ID", "Binary Flag", "Planetary Mass", "Discovery
 output$plot <- threejs::renderScatterplotThree({
 
 url <- "https://raw.githubusercontent.com/OpenExoplanetCatalogue/oec_tables/master/comma_separated/open_exoplanet_catalogue.txt"
-## library(RCurl)
-## url <- getURL(url)
+
 ## get data
-data <- read.csv(url, skip = 30, stringsAsFactors = F)
+## data <- read.csv(url, skip = 30, stringsAsFactors = F)
+
+## modified code from http://stackoverflow.com/questions/32416864/dealing-with-raw-vector-from-r-geturlcontent
+## works on shinyapps
+library(RCurl)
+url <- getURLContent(url, httpauth = 1L, binary=TRUE)
+
+data <- readBin(url , what='character') 
+data <- data.frame(read.csv(textConnection(data), stringsAsFactors = FALSE, skip = 30))
+
 ## column names
 names(data) <- c("Primary ID", "Binary Flag", "Planetary Mass", "Radius", "Period", "Axis", "Eccentricity", "Periastron", "Longitude" ,"Ascending Node", "Inclination", "Temp", "Age", "Discovery Method" ,"Discovery Year", "Last Updated", "Right Ascension", "Declination", "Distance from Sun (parsec)", "Host Start Mass", "Host Star Radius", "HS Metallicity", "HS temp" ,"HS age")
 
